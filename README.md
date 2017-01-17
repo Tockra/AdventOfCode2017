@@ -1,5 +1,5 @@
 # AdventOfCode2016
-Um meine Kentnisse von Rust etwas zu vertiefen, werde ich die AdventOfCode-Aufgaben (http://adventofcode.com/) von 2016 in Rust lösen.
+Um meine Kentnisse von Rust etwas zu vertiefen, werde ich die AdventOfCode-Aufgaben (http://adventofcode.com/2016) von 2016 in Rust lösen.
 
 Die Aufgabenstellung kann auf der Webseite eingesehen werden. Ich werde die Eingabe immer über eine Datei mit dem Namen "input.data" einlesen.
 
