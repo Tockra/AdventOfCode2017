@@ -1,0 +1,6 @@
+[package]
+name = "day03_01"
+version = "0.1.0"
+authors = ["TiTan <tim.tannert@tu-dortmund.de>"]
+
+[dependencies]
