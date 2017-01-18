@@ -1,7 +1,7 @@
 # AdventOfCode2016
 Um meine Kentnisse von Rust etwas zu vertiefen, werde ich die AdventOfCode-Aufgaben (http://adventofcode.com/2016) von 2016 in Rust lösen.
 
-Die Aufgabenstellung kann auf der Webseite eingesehen werden. Ich werde die Eingabe immer über eine Datei mit dem Namen "input.data" einlesen.
+Die Aufgabenstellung kann auf der Webseite eingesehen werden. Ich werde für die Verarbeitung der Eingaben eine Datei mit dem Namen "input.data" in die Binary einbinden.
 
 Die grobe Ordnerstruktur dieses Projekts sieht folgendermaßen aus:
 AoC---2016-Rust-/day-<Tag>_<Aufgabe>/...

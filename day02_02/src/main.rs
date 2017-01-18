@@ -1,5 +1,4 @@
 fn main() {
-	
 	// Feld, dass das Keypad darstellt, -1 Felder sind nicht betretbare Felder
 	let mut keypad = [[-1;11];11];
 	
