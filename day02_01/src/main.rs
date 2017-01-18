@@ -1,12 +1,4 @@
-use std::io::prelude::*;
-use std::io::BufReader;
-use std::fs::File;
-
-
 fn main() {
-	//Eine Fehlerbehandlung ist in diesem Projekt aufgrund der Größe nicht unbedingt nötig!
-	//Input File + Reader:
-	let reader = BufReader::new(File::open("input.data").unwrap());
 	
 	// Feld, dass das Keypad darstellt, -1 Felder sind nicht betretbare Felder
 	let mut keypad = [[-1;11];11];
@@ -23,18 +15,21 @@ fn main() {
 
 	
 	
-	//read line by line
-	for line in reader.lines() {
+	// Die input Datei wird in die erzeugte Binärdatei eingebunden und als eingabe gelesen. Das dynamische Einlesen von anderen Dateien 
+	// ist nicht notwendig.
+	// Die folgende for-Schleife durchläuft die Datei zeile für Zeile.
+	for line in include_str!("../input.data").lines() {
 		
 		// Jede Zeile gibt eine Wegbeschreibung (char für char) zum Zielkey aus. Nach abarbeitung der folgenden Schleife 
 		// entsprechen x und y den Koordinaten des Zielkeys.
-		for elem in line.unwrap().chars() {
+		for elem in line.chars() {
 			match elem {
 				'R' if keypad[x+1][y] != -1 => x +=1,
 				'L' if keypad[x-1][y] != -1 => x -=1,
 				'U' if keypad[x][y-1] != -1 => y -=1,
 				'D' if keypad[x][y+1] != -1 => y +=1,
 				_ => ()
+				
 			}
 
 		}

@@ -1,7 +1,3 @@
-use std::io::prelude::*;
-use std::io::BufReader;
-use std::fs::File;
-
 enum Direction {
 	North,
 	East,
@@ -33,35 +29,32 @@ impl Direction {
 
 
 fn main() {
-	//Eine Fehlerbehandlung ist in diesem Projekt aufgrund der Größe nicht unbedingt nötig!
-	//Input File + Reader:
-	let reader = BufReader::new(File::open("input.data").unwrap());
-	
 	// Koordinaten
 	let mut x: i16 = 0;
 	let mut y: i16 = 0;
 	let mut direction = Direction::North;
 	
 	
-	//read line by line
-	for line in reader.lines() {
+	// Die input Datei wird in die erzeugte Binärdatei eingebunden und als eingabe gelesen. Das dynamische Einlesen von anderen Dateien 
+	// ist nicht notwendig.
+	// Die folgende for-Schleife durchläuft die Datei zeile für Zeile.
+	for line in include_str!("../input.data").lines()  {
 		// In dieser Aufgabe existiert nur eine Zeile, somit ist diese Schleife nicht zwingend notwendig. Sie wird aber für die folgenden
 		// Aufgaben beibehalten.
 		
-		for elem in line.unwrap().replace(' ', "").split(",") {
+		for elem in line.replace(' ', "").split(",") {
 			// Die Richtiung in die gedreht werden soll
 			let turn:char = elem.chars().nth(0).unwrap();
 			// Die Distanz die gegangen werden soll. Dafür reicht ein i16 !
 			let distance:i16 = (&elem[1..]).parse().unwrap();
-			
+		
 			// Neue Richtung wird bestimmt:
 			direction = direction.compute_direction(turn);
-			
+		
 			// Neue Position wird bestimmt:
 			compute_new_pos(&mut x,&mut y,distance,&direction);
-			
 		}
-		
+
 		//Finale Ausgabe
 		println!("X: {}, Y: {} Distanz: {}",x,y,x.abs()+y.abs());
 	}
