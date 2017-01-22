@@ -9,7 +9,7 @@ fn main() {
 		let mut is_ip = false;
 		
 		// Lösung ginge auch noch funktionaler, ist dann als Außenstehender kaum noch nachvollziehbar.
-		for part in line.replace("[",",").replace("]",",").split(",").map(contains_abba).enumerate() {
+		for part in line.split(|c| c == '[' || c == ']').map(contains_abba).enumerate() {
 			// Prüfen ob wir uns im Hypernet-Feld befinden
 			if part.0%2 == 1 && part.1 {
 				is_ip = false;
