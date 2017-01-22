@@ -6,43 +6,48 @@ fn main() {
 	// ist nicht notwendig.
 	// Die folgende for-Schleife durchläuft die Datei zeile für Zeile.
 	for line in include_str!("../input.data").lines() {
-		let mut is_ip = false;
 		
-		// Lösung ginge auch noch funktionaler, ist dann als Außenstehender kaum noch nachvollziehbar.
-		for part in line.replace("[",",").replace("]",",").split(",").map(contains_abba).enumerate() {
-			// Prüfen ob wir uns im Hypernet-Feld befinden
-			if part.0%2 == 1 && part.1 {
-				is_ip = false;
-				break;
-			}
-			if part.0%2 == 0 && part.1 {
-				is_ip = true;
-			}
+		let (even,odd) : (Vec<(usize,&str)>,Vec<(usize,&str)>) = line.split(|c| ['[', ']'].contains(&c)).enumerate().partition(|&n| n.0 % 2 == 0);
+		
+		// Prüft, ob es irgendwo im super_net-Teil ein Aba mit zugehörigem Bab aus dem hyper_net Teil gibt
+		if even.into_iter().any(|x| contains_aba(x.1,&odd)) {
+			count += 1 ;
 		}
-		if is_ip {
-			count += 1;
-		}
+		
 	}
 	
 	// Ausgabe
 	println!("Es wurden {} gültige Addressen gefunden!",count);
 }
 
-// Prüft ob addr_part ein Abbanym beinhaltet. Es wird davon ausgegangen, dass 1 char = 1 byte
-fn contains_abba(addr_part: &str) -> bool {
-	for limit_left in 0..addr_part.len()-3 {
-		// Es wird davon ausgegenangen, dass nur normale nicht Unicode-Buchstaben in hyper_net stehen
-		let slice = &addr_part[limit_left..limit_left+4];
-		if is_abba(slice) {
+// Prüft ob addr_part ein Aba mit zugehörigen Bab beinhaltet. Es wird davon ausgegangen, dass 1 char = 1 byte
+fn contains_aba(addr_part: &str, hyper_net: &Vec<(usize,&str)>) -> bool {
+	for limit_left in 0..addr_part.len()-2 {
+		
+		// Es wird davon ausgegenangen, dass nur normale nicht Unicode-Buchstaben in addr_teil stehen
+		let slice = &addr_part[limit_left..limit_left+3];
+		
+		// Wenn ein aba gefunden wird, dann wird geschaut, ob in irgendeinem zugehörigen hyper_net teil ein Bab existiert
+		if is_aba(slice) && contains_bab(slice,hyper_net) {
 			return true;
 		}
 	}
 	false
 }
 
-// Funktion prüft, ob ein übergegebener 4 elementiger String ein Abbanym ist
+fn contains_bab(aba: &str, hyper_net: &Vec<(usize,&str)>) -> bool {
+	// bab Zeichenkette wird erzeugt
+	let mut bab = String::new();
+	bab.push(aba.chars().nth(1).unwrap());
+	bab.push(aba.chars().nth(0).unwrap());
+	bab.push(aba.chars().nth(1).unwrap());
+	
+	// Es wird geprüft, ob irgendein hyper_net Teil die Bab Zeichenkette beinhaltet
+	hyper_net.iter().any(|x| x.1.to_string().contains(&bab))
+}
+// Funktion prüft, ob ein übergegebener 3 elementiger String ein Abbanym ist
 // Es wird sichergestellt das kein unwrap jemals realistisch panict
-fn is_abba(candidate: &str) -> bool {
-	candidate.chars().nth(0).unwrap() ==candidate.chars().nth(3).unwrap()  && candidate.chars().nth(1).unwrap()  == candidate.chars().nth(2).unwrap()  && candidate.chars().nth(0).unwrap()  != candidate.chars().nth(1).unwrap() 
+fn is_aba(candidate: &str) -> bool {
+	candidate.chars().nth(0).unwrap() ==candidate.chars().nth(2).unwrap()  && candidate.chars().nth(0).unwrap()  != candidate.chars().nth(1).unwrap() 
 }
 
