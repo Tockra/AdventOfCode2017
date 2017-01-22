@@ -1,6 +1,6 @@
 fn main() {
 	// Vektor für die Ausgabe
-	let mut output = ['-';8];
+	let mut output = [Vec::new();8];
 	
 	// Die input Datei wird in die erzeugte Binärdatei eingebunden und als eingabe gelesen. Das dynamische Einlesen von anderen Dateien 
 	// ist nicht notwendig.
