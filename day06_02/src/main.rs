@@ -15,9 +15,11 @@ fn main() {
 	
 	// Im Array output wird für jeden Index i, der häufigste Charakter im entsprechenden Vektor aus dem input Array bestimmt
 	for i in 0..8 {
-		output[i] = input[i].iter().fold('-',
+		// Im Fold muss eine kleine Anpassung für Aufgabe 02 gemacht werden
+		// Es muss dafür gesorgt werden, dass der Char ' ' niemals Lösungskandidat ist.
+		output[i] = input[i].iter().fold(' ',
 			|acc, &x| 
-			if input[i].iter().filter(|y| *y == &x).count() > input[i].iter().filter(|y| *y == &acc).count() {
+			if input[i].iter().filter(|y| *y == &x).count() < input[i].iter().filter(|y| *y == &acc).count() || acc == ' ' {
 				x
 			} else {
 				acc
