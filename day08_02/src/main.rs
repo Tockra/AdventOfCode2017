@@ -30,10 +30,14 @@ fn main() {
 	let mut count = 0;
 	
 	// Ausgabe
-	for c in screen.iter() {
-		if *c == '#' {
-			count += 1;
+	for y in 0..screen.len_of(Axis(1)) {
+		for x in 0..screen.len_of(Axis(0)) {
+			if screen[[x,y]] == '#' {
+				count += 1;
+			}
+			print!("{}",screen[[x,y]]);
 		}
+		println!("");
 	}
 	println!("Anzahl der leuchtenden Pixel: {}",count);
 }
