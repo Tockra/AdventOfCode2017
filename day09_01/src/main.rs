@@ -1,6 +1,7 @@
-enum Input_Elems {
-	Elem(char),
-	Modifier(i32,i32)
+#[derive(Debug)]
+enum InputElems {
+	Elem,
+	Modifier(i32,i32,i32)
 }
 
 fn main() {
@@ -14,21 +15,44 @@ fn main() {
 	// In dieser Inputdatei existiert allerdings nur eine Zeile, somit wird die Schleife nur einmal durchlaufen!
 	for line in include_str!("../input.data").lines() {
 		// Eingabe wird geparsed und in einen Vector mit Input_Elems mgewandelt
-		let mut input: Vec<Input_Elems> = Vec::new();
+		let mut input: Vec<InputElems> = Vec::new();
 		let tmp = line.split(|c| ['(', ')'].contains(&c));
 		for elem in tmp.enumerate() {
-			
-		}
-		// Es wird durch den String iteriert. Wenn in einem Block (axb) eingetreten wird, dann werden die nächsten a Zeichen b mal ins Ergebniss aufgenommen. 
-		//Dann werden a Zeichen übersprungen und weiter gezählt
-		for c in line.replace('(',"").replace(')',"").replace('x',",").chars() {
-			if c != '(' {
-				count += 1 ;
+			if elem.0 % 2 == 1 {
+				let mut splitted_modifier = elem.1.split("x");
+				let a = splitted_modifier.nth(0).unwrap().parse::<i32>().unwrap();
+				let b = splitted_modifier.nth(0).unwrap().parse::<i32>().unwrap();			
+				input.push(InputElems::Modifier(a,b,elem.1.len() as i32 +2));
 			}
 			else {
-				
+				for _ in 0..elem.1.len() {
+					input.push(InputElems::Elem);
+				}
 			}
 		}
+	
+		// Nun kann über die Eingabe iteriert werden und zählen.
+		let mut i = 0;
+		while i<input.len() {
+			match input[i] {
+				InputElems::Elem => count += 1,
+				InputElems::Modifier(a,b,_) => {
+					count += a*b;
+					let mut size = a;
+					
+					// Hier wird i entsprechend der size des aktuellen Bereichs angepasst
+					while size >0 {
+						i += 1;
+						match input[i] {
+							InputElems::Elem => size -= 1,
+							InputElems::Modifier(_,_,n_size) => size -= n_size
+						}
+					}
+				}
+			};
+			i += 1;
+		}
+		
 	}
 	
 	
