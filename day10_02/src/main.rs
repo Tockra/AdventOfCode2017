@@ -1,18 +1,12 @@
-// Diese Lösung ist etwas überladen, da ich die Aufgabe unbedingt objektorientiert lösen wollte. Tatsächlich ist die Funktion interact deshalb etwas umständlich programmiert
-// Einfacher wäre eine Lösung über Indizis gewesen und eine globale Funktion interact. 
-
-
 #[derive(Clone,Copy)]
 struct Bot {
 	id: usize,
 	higher: u32,
 	lower: u32,
 	bot_higher: Option<usize>,
-	// Hier wird kein Option benutzt. Stattdessen wird sichergestellt, dass dieser Wert nur beachtet wird wenn bot_higher = None gilt
 	output_higher: usize,
 	
 	bot_lower: Option<usize>,
-	//Siehe oben
 	output_lower: usize
 }
 
@@ -66,11 +60,8 @@ impl Bot {
 		if self.has_higher() && self.has_lower() {
 			let value_lower = self.lower;
 			let value_higher = self.higher;
-			
-			// Hier muss über den Index gegangen werden, da self tatsächlich nur eine Kopie aus dem Array bots ist und eine Änderung in self würde kein Auswirkung auf den echten Bot haben
 			bots[self.id].reset();
 			
-			// Hier muss eine kleine Fallunterscheidung gemacht werden, da leider Bot 0 auch existiert...
 			match self.bot_lower {
 				Some(id) => {
 					bots[id].give_value(value_lower);
@@ -157,8 +148,6 @@ fn main() {
 	    bot.interact(&mut bots,&mut outputs);
 	}
 	
-	
-	// Ausgabe
 	println!("________Bots_______:");
 	for bot in bots.iter() {
 		if bot.has_higher() || bot.has_lower() {
@@ -173,5 +162,7 @@ fn main() {
 		}
 	}
 	
+	// Ausgabe für 10_02
+	println!("Die gesuchte Zahl entspricht: {}",outputs[0]*outputs[1]*outputs[2]);
 	
 }

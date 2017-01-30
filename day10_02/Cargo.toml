@@ -1,0 +1,6 @@
+[package]
+name = "day10_02"
+version = "0.1.0"
+authors = ["Tockra <tim.tannert@tu-dortmund.de>"]
+
+[dependencies]
