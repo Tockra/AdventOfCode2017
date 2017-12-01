@@ -20,17 +20,9 @@ fn main() {
 
 	// Durchläuft jede zahl und prüft, ob diese ihrem Vorgänger entspricht. Falls dies der Fall ist, wird die Summe erhöht
 	for i in 0..list.len() {
-		// Sonderfall für erstes und letztes Element:
-
-		if i == 0 {
-			if list[i] == list[list.len()-1] {
-				sum += list[i];
-			}
-		}
-		else {
-			if list[i] == list[i-1] {
-				sum += list[i];
-			}
+		// Vergleicht aktuelles mit nächstem Element mit WrapAround
+		if list[i] == list[(i+1)%list.len()] {
+			sum += list[i];
 		}
 
 	}
