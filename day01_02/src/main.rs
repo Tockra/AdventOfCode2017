@@ -20,19 +20,10 @@ fn main() {
 
 	// Durchläuft jede zahl und prüft, ob diese ihrem Vorgänger entspricht. Falls dies der Fall ist, wird die Summe erhöht
 	for i in 0..list.len() {
-		// Sonderfall für erstes und letztes Element:
-
-		if i == 0 {
-			if list[i] == list[list.len()-1] {
+		// Element mit dem len()/2 Elementen weiter forne stehenden Element vergleichen, wobei WrapAround durch Modulo erreicht wird
+			if list[i] == list[(i+list.len()/2)% list.len()] {
 				sum += list[i];
 			}
-		}
-		else {
-			if list[i] == list[i-1] {
-				sum += list[i];
-			}
-		}
-
 	}
 
 	println!("Das Ergebnis dieser Aufgabe entspricht: {}",sum);
