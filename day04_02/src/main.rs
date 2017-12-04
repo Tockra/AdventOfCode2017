@@ -29,11 +29,16 @@ impl<'a> Passphrase<'a> {
 	}
 }
 
+// Vergleicht zwei Strings, ob diese ein Anagram sind
 fn are_anagrams(w1: &str, w2: &str) -> bool {
 	if w1.len() == w2.len() {
-		return true
+		for c in w1.chars() {
+			if !w2.contains(c) {
+				return false
+			}
+		}
 	}
-	false
+	true
 }
 
 fn main() {
