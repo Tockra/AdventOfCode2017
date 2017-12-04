@@ -45,7 +45,7 @@ fn main() {
 		
 	}
 	
-	println!("Es gibt {} ungültige Passphrases", sum);
+	println!("Es gibt {} gültige Passphrases", sum);
 	
 
 }

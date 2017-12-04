@@ -11,19 +11,13 @@ impl<'a> Passphrase<'a> {
 	// Diese Funktion prüft die Passphrase gültig ist
 	// Aktuelle Version ist völlig unsauber programmiert und sollte so nicht verwendet werden...
 	fn is_passphrase(&self) -> bool {
-		for elem in self.name.clone() {
-			let count: Vec<i32> = self.name.iter().map(
-					|&x| 
-					if x == elem {
-						1
-					}
-					else {
-						0
-					}
-				).collect();
-			if count.iter().sum::<i32>() >= 2 {
-					return false;
+		// Vergleiche alle mit allen
+		for i in 0..self.name.len() {
+			for j in i+1..self.name.len() {
+				if are_anagrams(self.name[i],self.name[j]) {
+					return false
 				}
+			}
 		}
 		true
 	}
@@ -37,14 +31,15 @@ fn are_anagrams(w1: &str, w2: &str) -> bool {
 				return false
 			}
 		}
+		return true
 	}
-	true
+	false
 }
 
 fn main() {
 	// Summe der bisherigen gültigen Passphrases
 	let mut sum = 0;
-		
+
 	// Die input Datei wird in die erzeugte Binärdatei eingebunden und als eingabe gelesen. Das dynamische Einlesen von anderen Dateien 
 	// ist nicht notwendig.
 	// Die folgende for-Schleife durchläuft die Datei zeile für Zeile.
