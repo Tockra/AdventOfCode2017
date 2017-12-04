@@ -1,58 +1,60 @@
-use std::char;
-// Datenstruktur für einen Raum
-struct Room {
-	name: String,
-	checksum: String,
-	sector_id: i32
+
+struct Passphrase<'a> {
+	name: Vec<&'a str>,
 }
-impl Room {
-	fn new() -> Room {
-		Room {name: "".to_string(), checksum: "".to_string(),sector_id: -1}
+impl<'a> Passphrase<'a> {
+	
+	fn new(name: Vec<&str>) -> Passphrase {
+		Passphrase {name: name}
 	}
 	
-	// Diese Funktion wird zum Erzeugen eines Room Elements verwendet
-	fn push(&mut self,wort:&str ) {
-		if self.name == "" {
-			// Aus dem Namen wird gleich die Sektor-ID genommen und in eine eigene Variabel geschrieben
-			self.name = wort[0..wort.to_string().rfind("-").unwrap()].to_string();
-			self.sector_id = wort[wort.to_string().rfind("-").unwrap()+1..].parse().unwrap();
+	// Diese Funktion prüft die Passphrase gültig ist
+	// Aktuelle Version ist völlig unsauber programmiert und sollte so nicht verwendet werden...
+	fn is_passphrase(&self) -> bool {
+		for elem in self.name.clone() {
+			let count: Vec<i32> = self.name.iter().map(
+					|&x| 
+					if x == elem {
+						1
+					}
+					else {
+						0
+					}
+				).collect();
+			if count.iter().sum::<i32>() >= 2 {
+					return false;
+				}
 		}
-		else {
-			self.checksum = wort.to_string();
-		}
+		true
 	}
+}
 
+fn are_anagrams(w1: &str, w2: &str) -> bool {
+	if w1.len() == w2.len() {
+		return true
+	}
+	false
 }
 
 fn main() {
+	// Summe der bisherigen gültigen Passphrases
+	let mut sum = 0;
+		
 	// Die input Datei wird in die erzeugte Binärdatei eingebunden und als eingabe gelesen. Das dynamische Einlesen von anderen Dateien 
 	// ist nicht notwendig.
 	// Die folgende for-Schleife durchläuft die Datei zeile für Zeile.
 	for line in include_str!("../input.data").lines() {
-		let mut room = Room::new();
-		for elem in line.replace(']',"").split("[") {
-			room.push(elem);
-		} 
-		
-		// Rotiere alle Chars des Namens um die SektorID
-		let encrypted_name = room.name.chars()
-				.map(|x| 
-					// Chars werden nur rotiert, wenn das char kein '-' ist
-					if x != '-' {
-						// Formel zum rotieren + unwrap, da nicht zwangsläufig ein Char von from_u32() berechnet werden muss
-						// Die Formel für die Berechnung lässt allerdings ungültigen Wert, der einen Fehler verursachen könnte, zu!
-						char::from_u32(('a' as u32 + ((x as u32 - 'a' as u32 + (room.sector_id % 26) as u32) % 26))).unwrap()
-					} 
-					else {x}
-				).collect::<String>();
+		let pp = Passphrase::new(line.split_whitespace().collect()); // Jede Zeile wird in die Datenstruktur überführt
 
-		// Es wird geprüft, ob der aktuell betrachtete Raum der North Pole raum ist. 
-		if encrypted_name.contains("north") {
-			println!("Raum gefunden: {} ID: {}",encrypted_name,room.sector_id);
+		if pp.is_passphrase() { // Einfacher gültigkeitscheck
+			sum +=1;
 		}
-	
+		
 	}
 	
+	println!("Es gibt {} ungültige Passphrases", sum);
+	
+
 }
 
 
