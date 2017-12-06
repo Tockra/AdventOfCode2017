@@ -1,31 +1,41 @@
 fn main() {
-	// Array für die Ausgabe
-	let mut input: [Vec<char>;8] = [vec![], vec![], vec![], vec![], vec![], vec![], vec![], vec![]];
 	
-	// Die input Datei wird in die erzeugte Binärdatei eingebunden und als eingabe gelesen. Das dynamische Einlesen von anderen Dateien 
-	// ist nicht notwendig.
-	// Die folgende for-Schleife durchläuft die Datei zeile für Zeile.
-	for line in include_str!("../input.data").lines() {
-		for i in 0..line.len() {
-			input[i].push(line.chars().nth(i).unwrap());
+	let past: Vec<Vec<i32>> = vec![];
+	let mut count = 0;
+	
+	// Die input Datei wird in die erzeugte Binärdatei eingebunden und als eingabe gelesen.
+
+	let mut mem = include_str!("../input.data").split_whitespace();
+	
+	while !past.contains(mem) {
+		past.push(mem);
+
+		let max = get_max_index(&mem);
+		let mut to_distr = mem[max];
+		let mut curr = 1;
+		mem[max] = 0;
+		while to_distr > 0 {
+			mem[(max+curr)%mem.len()] += 1;
+			to_distr -= 1;
+			curr += 1;
+		}
+
+		count += 1
+	}
+		
+	// Ausgabe
+	println!("Es wurden {} Schritte gemacht, bis eine bereits bekannte Konfiguration eintraf.",count);
+}
+
+// Berechnet den Index des maximalen Elements
+fn get_max_index(v: Vec<i32>) -> usize {
+	let mut max = 0;
+	for i in 0..v.len() {
+		if v[i] > v[max] {
+			max = i;
 		}
 	}
-	
-	let mut output = ['-';8];
-	
-	// Im Array output wird für jeden Index i, der häufigste Charakter im entsprechenden Vektor aus dem input Array bestimmt
-	for i in 0..8 {
-		output[i] = input[i].iter().fold('-',
-			|acc, &x| 
-			if input[i].iter().filter(|y| *y == &x).count() > input[i].iter().filter(|y| *y == &acc).count() {
-				x
-			} else {
-				acc
-			});
-	}
-	
-	// Ausgabe
-	println!("{}",output.iter().cloned().collect::<String>());
+	max
 }
 
 
