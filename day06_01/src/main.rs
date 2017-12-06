@@ -1,21 +1,23 @@
+use std::str::FromStr;
 fn main() {
 	
-	let past: Vec<Vec<i32>> = vec![];
+	let mut past: Vec<Vec<i32>> = vec![];
 	let mut count = 0;
 	
 	// Die input Datei wird in die erzeugte Binärdatei eingebunden und als eingabe gelesen.
 
-	let mut mem = include_str!("../input.data").split_whitespace();
+	let mut mem: Vec<i32> = include_str!("../input.data").split_whitespace().map(|x| i32::from_str(x.trim()).unwrap()).collect();
 	
-	while !past.contains(mem) {
-		past.push(mem);
+	while !past.contains(&mem) {
+		past.push(mem.clone());
 
 		let max = get_max_index(&mem);
 		let mut to_distr = mem[max];
 		let mut curr = 1;
 		mem[max] = 0;
 		while to_distr > 0 {
-			mem[(max+curr)%mem.len()] += 1;
+			let len = mem.len();
+			mem[(max+curr)%len] += 1;
 			to_distr -= 1;
 			curr += 1;
 		}
@@ -28,7 +30,7 @@ fn main() {
 }
 
 // Berechnet den Index des maximalen Elements
-fn get_max_index(v: Vec<i32>) -> usize {
+fn get_max_index(v: &Vec<i32>) -> usize {
 	let mut max = 0;
 	for i in 0..v.len() {
 		if v[i] > v[max] {
