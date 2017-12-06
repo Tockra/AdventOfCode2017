@@ -1,33 +1,52 @@
+use std::str::FromStr;
 fn main() {
-	// Array für die Ausgabe
-	let mut input: [Vec<char>;8] = [vec![], vec![], vec![], vec![], vec![], vec![], vec![], vec![]];
 	
-	// Die input Datei wird in die erzeugte Binärdatei eingebunden und als eingabe gelesen. Das dynamische Einlesen von anderen Dateien 
-	// ist nicht notwendig.
-	// Die folgende for-Schleife durchläuft die Datei zeile für Zeile.
-	for line in include_str!("../input.data").lines() {
-		for i in 0..line.len() {
-			input[i].push(line.chars().nth(i).unwrap());
+	let mut past: Vec<Vec<i32>> = vec![];
+	let mut past_time: Vec<i32> = vec![];
+	let mut count = 0;
+	
+	// Die input Datei wird in die erzeugte Binärdatei eingebunden und als eingabe gelesen.
+
+	let mut mem: Vec<i32> = include_str!("../input.data").split_whitespace().map(|x| i32::from_str(x.trim()).unwrap()).collect();
+	
+	while !past.contains(&mem) {
+		past.push(mem.clone());
+		past_time.push(count);
+		let max = get_max_index(&mem);
+		let mut to_distr = mem[max];
+		let mut curr = 1;
+		mem[max] = 0;
+		while to_distr > 0 {
+			let len = mem.len();
+			mem[(max+curr)%len] += 1;
+			to_distr -= 1;
+			curr += 1;
 		}
-	}
-	
-	let mut output = ['-';8];
-	
-	// Im Array output wird für jeden Index i, der häufigste Charakter im entsprechenden Vektor aus dem input Array bestimmt
-	for i in 0..8 {
-		// Im Fold muss eine kleine Anpassung für Aufgabe 02 gemacht werden
-		// Es muss dafür gesorgt werden, dass der Char ' ' niemals Lösungskandidat ist.
-		output[i] = input[i].iter().fold(' ',
-			|acc, &x| 
-			if input[i].iter().filter(|y| *y == &x).count() < input[i].iter().filter(|y| *y == &acc).count() || acc == ' ' {
-				x
-			} else {
-				acc
-			});
+
+		count += 1
 	}
 	
 	// Ausgabe
-	println!("{}",output.iter().cloned().collect::<String>());
+	println!("Es wurden {} Schritte gemacht, bis eine bereits bekannte Konfiguration eintraf.",count-past_time[get_index_of_double(&past, &mem)]);
 }
 
+// Berechnet den Index des maximalen Elements
+fn get_max_index(v: &Vec<i32>) -> usize {
+	let mut max = 0;
+	for i in 0..v.len() {
+		if v[i] > v[max] {
+			max = i;
+		}
+	}
+	max
+}
+
+fn get_index_of_double(v: &Vec<Vec<i32>>, val: &Vec<i32>) -> usize {
+	for i in 0..v.len() {
+		if v[i] == *val {
+			return i
+		}
+	}
+	0
+}
 
