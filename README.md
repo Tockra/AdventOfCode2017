@@ -1,6 +1,8 @@
 # AdventOfCode2017
 Um meine Kentnisse von Rust etwas zu vertiefen, werde ich die AdventOfCode-Aufgaben (http://adventofcode.com/2017) von 2017 in Rust lösen.
 
+Aufgrund meiner schwindenen Zeit in diesem Jahr, werde ich die Aufgaben nicht so schön wie im letzten Jahr lösen und auch nicht ausgibig kommentieren. Dieses Jahr steht unter dem Motto: "Hauptsache die Lösung funktioniert"...
+
 Die Aufgabenstellung kann auf der Webseite eingesehen werden. Ich werde für die Verarbeitung der Eingaben eine Datei mit dem Namen "input.data" in die Binary einbinden.
 
 Die grobe Ordnerstruktur dieses Projekts sieht folgendermaßen aus:
