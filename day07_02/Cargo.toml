@@ -4,3 +4,4 @@ version = "0.1.0"
 authors = ["Tockra <tim.tannert@tu-dortmund.de>"]
 
 [dependencies]
+forest = "0.0.1"
